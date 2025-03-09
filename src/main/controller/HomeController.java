@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
+	String className = this.getClass().getSimpleName();
 
 	@Autowired
 	TourService tourService;
@@ -20,8 +21,9 @@ public class HomeController {
 
 	@RequestMapping("/showtour")
 	public String showTour() {
-		System.out.println("invoking showTour method");
+		System.out.println(className + " - invoking showTour method");
 		Tour tour = tourService.getById(1);
+		System.out.println(className + " - " + tour.toString());
 		return "home";
 	}
 
