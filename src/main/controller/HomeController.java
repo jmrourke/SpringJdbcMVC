@@ -19,8 +19,8 @@ public class HomeController {
 	}
 
 	@RequestMapping("/showtour")
-	public String causeRunTimeError() {
-		System.out.println("invoking causeRunTimeError method");
+	public String showTour() {
+		System.out.println("invoking showTour method");
 		Tour tour = tourService.getById(1);
 		return "home";
 	}
