@@ -2,6 +2,7 @@ package main.controller;
 
 import main.dao.TourDAO;
 import main.model.Tour;
+import main.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
 	@Autowired
-	TourDAO tourDAO;
+	TourService tourService;
 
 	@RequestMapping("/")
 	public String getHome() {
 		return "home";
 	}
 
-	@RequestMapping("/addTour")
-	public String addTour() {
-		System.out.println("invoking addTour method");
-		Tour tour = tourDAO.getById(1);
+	@RequestMapping("/showtour")
+	public String causeRunTimeError() {
+		System.out.println("invoking causeRunTimeError method");
+		Tour tour = tourService.getById(1);
 		return "home";
 	}
 

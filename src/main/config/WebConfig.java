@@ -73,30 +73,6 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
 
-	@Bean
-	public DataSource getDataSource() {
-		System.out.println("Creating datasource object");
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(environment.getProperty("jdbc.driver"));
-		dataSource.setUrl(environment.getProperty("jdbc.url"));
-		dataSource.setUsername(environment.getProperty("jdbc.username"));
-		dataSource.setPassword(environment.getProperty("jdbc.password"));
-		return dataSource;
-	}
-
-	@Bean("txManager")
-	public PlatformTransactionManager txManager() {
-		System.out.println("Creating DataSourceTransactionManager bean");
-		return new DataSourceTransactionManager(getDataSource());
-	}
-
-	@Bean
-	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
-		System.out.println("Creating NamedParameterJdbcTemplate bean");
-		NamedParameterJdbcTemplate namedJdbcTemplate =
-				new NamedParameterJdbcTemplate(getDataSource());
-		return namedJdbcTemplate;
-	}
 
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
