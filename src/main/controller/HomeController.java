@@ -27,5 +27,14 @@ public class HomeController {
 		return "home";
 	}
 
+	@RequestMapping("/addtours")
+	public String addtours() {
+		System.out.println(className + " - invoking addtours method");
+		boolean result = tourService.addTours();
+		System.out.println(className + " - " + result);
+		return "home";
+	}
+
+
 	
 }

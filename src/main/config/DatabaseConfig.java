@@ -40,7 +40,7 @@ public class DatabaseConfig {
 		return dataSource;
 	}
 
-	@Bean("transactionManager")
+	@Bean("txManager")
 	public PlatformTransactionManager transactionManager() {
 		System.out.println("Creating DataSourceTransactionManager bean");
 		return new DataSourceTransactionManager(getDataSource());

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 
 @Repository
@@ -34,32 +35,53 @@ public class TourDAO {
     } // end of tourExists method
 
 
-    public Tour getById(int tourId) {
-        System.out.println(className + " - Invoking getById method - tourId = " + tourId);
-        Tour tour = null;
-
-        if (!tourExists(tourId)) {
-            System.out.println(className + " tour 1 cannot be found - returning null");
-            return null;
-        } // end if
-
-        String sql = "select * from tour where id = :id";
-
-        try {
-            tour = jdbc.queryForObject(sql, new MapSqlParameterSource("id", tourId), new RowMapper<Tour>() {
-                public Tour mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    return gapsRowMapper.mapTour(rs, rowNum);
-                } // end anonymous method
-            });
-        } catch (EmptyResultDataAccessException e) {} // end try/catch
-
-        System.out.println(className + " - getById method completed");
-        return tour;
-
+    public Integer getMaxTourId() {
+        System.out.println(className + " - Invoking getMaxTourId method");
+        Integer maxKey = jdbc.queryForObject("SELECT MAX(id) from tour", new MapSqlParameterSource(), Integer.class);
+        if (maxKey == null) maxKey = new Integer(0);
+        System.out.println(className + " - getMaxTourId method completed - " + maxKey.intValue());
+        return maxKey;
     }
 
 
-    public Tour getByIdX(int tourId) {
+    public boolean addTours() {
+        System.out.println(className + " -  Invoking add120Tours method");
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        int startKey = getMaxTourId() + 1;
+        for (int key = startKey ; key < (startKey + 2001) ; key++) {
+            Tour tour = new Tour();
+            tour.setId(key);
+            tour.setName("My Tour " + key);
+            tour.setCode("12345");
+            tour.setContinent(1);
+            tour.setDate(new Date());
+            tour.setDuration(key*2);
+            tour.setAllInclusive(true);
+            params.addValue("key",  tour.getId());
+            params.addValue("name", tour.getName());
+            params.addValue("code", tour.getCode());
+            params.addValue("continent", tour.getContinent());
+            params.addValue("date", tour.getDate());
+            params.addValue("duration", tour.getDuration());
+            params.addValue("all", tour.isAllInclusive());
+
+            int rows = jdbc.update("insert into tour"
+                    + " (id, name, code, continent, date, duration, all_inclusive)"
+                    + " values (:key, :name, :code, :continent, :date, :duration, :all)",
+                    params);
+
+            System.out.println("inserted tour - " + key);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } // end try/catch
+        } // end for loop
+        return true;
+    }
+
+
+    public Tour getById(int tourId) {
         System.out.println("Invoking getById v 3- tourId = " + tourId);
 
         String sql = "select * from tour where id = :id";
@@ -85,12 +107,9 @@ public class TourDAO {
         jdbc.update(sqlB, params);
         System.out.println("value is now 400");
 
-        jdbc.update(sqlC, params);  // invalid SQL tourX is not a table name
-
         System.out.println("method getById completed - tourId = " + tourId);
         return tour;
 
     }
-
 
 } // end of TourDAO class
