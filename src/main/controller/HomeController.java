@@ -1,6 +1,5 @@
 package main.controller;
 
-import main.dao.TourDAO;
 import main.model.Tour;
 import main.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;

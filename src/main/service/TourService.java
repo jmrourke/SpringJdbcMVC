@@ -5,9 +5,9 @@ import main.model.Tour;
 public interface TourService {
 
 
-	public Tour getById(int id);
+	Tour getById(int id);
 
-	public boolean addTours();
+	boolean addTours();
 
 
 	
